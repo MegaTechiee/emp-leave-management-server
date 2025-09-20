@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    container_name: emp-leave-management-server
+    env_file:
+      - .env.devcontainer
+    volumes:
+      - ./../:/home/app:cached
+      - node_modules:/home/app/node_modules
+    command: sleep infinity
+    ports:
+      - 5001:5001
+    networks:
+      - emp_network
+
+volumes:
+  node_modules:
+networks:
+  emp_network:
+    name: emp_network
+    external: true

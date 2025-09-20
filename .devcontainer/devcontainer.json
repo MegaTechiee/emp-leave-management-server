@@ -1,0 +1,34 @@
+{
+  "name": "emp-leave-management-server",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/home/app",
+  // "shutdownAction": "stopCompose",
+  "shutdownAction": "none",
+  // "postCreateCommand": "npm install", // You can change or remove this later
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "GitHub.copilot",
+        // "ms-vscode.vscode-typescript-next",
+        // "SonarSource.sonarlint-vscode",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [5001]
+//   "features": {
+//     "ghcr.io/devcontainers/features/java:1": {
+//       "version": "24.0.1"
+//     }
+//   }
+}
+

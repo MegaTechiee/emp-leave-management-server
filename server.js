@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
@@ -9,6 +10,15 @@ const adminRoutes    = require('./routes/admin');
 
 
 const app = express();
+app.use(cors({
+  origin: 
+    [ 
+      'http://localhost:3001', 
+      'http://localhost:3000'
+    ], // frontend origin
+  credentials: true,  // if you send cookies
+}));
+
 app.use(express.json()); // For parsing JSON body
 app.use(cookieParser()); // enables reading cookies later
 console.log('process.env.MONGO_URI', process.env.MONGO_URI)
@@ -39,21 +49,20 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/employee', employeeRoutes);
 app.use('/api/admin', adminRoutes);
 
 // Example protected routes
-app.get('/api/employee/dashboard', authMiddleware('employee'), (req, res) => {
-    // console.log('req', req);
-    res.json({ message: `Welcome Employee ${req.user.name}` });
-});
+// app.get('/api/employee/dashboard', authMiddleware('employee'), (req, res) => {
+//     // console.log('req', req);
+//     res.json({ message: `Welcome Employee ${req.user.name}` });
+// });
 
-app.get('/api/admin/dashboard', authMiddleware('admin'), (req, res) => {
-    // console.log('req', req);
-    res.json({ message: `Welcome Admin ${req.user.name}` });
-});
-
-app.use('/users', userRoutes);
+// app.get('/api/admin/dashboard', authMiddleware('admin'), (req, res) => {
+//     // console.log('req', req);
+//     res.json({ message: `Welcome Admin ${req.user.name}` });
+// });
 
 // Start the app
 startServer();

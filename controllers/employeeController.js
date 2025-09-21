@@ -5,7 +5,7 @@ const { sendError, sendSuccess } = require('../utils/responseHelpers');
 exports.applyLeave = async (req, res) => {
   try {
     const leave = await employeeService.applyLeave(req.user.id, req.body);
-    return sendSuccess(res, { general_message: 'Leave applied', data: { leave } }, 201);
+    return sendSuccess(res, { general_message: 'Leave applied Successfully', data: { leave } }, 201);
   } catch (err) {
     return sendError(res, err.message, err.status || 500);
   }

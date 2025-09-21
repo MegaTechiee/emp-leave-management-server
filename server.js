@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const authMiddleware = require('./middleware/auth');
 const userRoutes = require('./routes/user');
+const employeeRoutes = require('./routes/employee');
+const adminRoutes    = require('./routes/admin');
 
 
 const app = express();
@@ -33,10 +35,12 @@ const startServer = async () => {
 
 // Simple route
 app.get('/', (req, res) => {
-    res.send('Hello MongoDB!');
+    res.send('Welcome buddy!');
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/employee', employeeRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Example protected routes
 app.get('/api/employee/dashboard', authMiddleware('employee'), (req, res) => {

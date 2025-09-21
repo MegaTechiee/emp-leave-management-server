@@ -14,8 +14,8 @@ RUN apt-get update && \
 
 
 # Install Project Deps
-# COPY package.json package-lock.json ./
-# RUN npm install
+COPY package.json package-lock.json ./
+RUN npm install
 
 
 # Default command

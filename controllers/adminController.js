@@ -32,6 +32,15 @@ exports.updateLeaveStatus = async (req, res) => {
   }
 };
 
+// exports.updateLeaveBalance = async (req, res) => {
+//   try {
+//     const balance = await adminService.updateLeaveBalance(req.params.employeeId, req.body);
+//     return sendSuccess(res, { general_message: 'Balance updated', data: { balance } });
+//   } catch (err) {
+//     return sendError(res, err.message, err.status || 500);
+//   }
+// };
+
 exports.updateLeaveBalance = async (req, res) => {
   try {
     const balance = await adminService.updateLeaveBalance(req.params.employeeId, req.body);
@@ -39,4 +48,22 @@ exports.updateLeaveBalance = async (req, res) => {
   } catch (err) {
     return sendError(res, err.message, err.status || 500);
   }
+};
+
+exports.getEmployeeLeaveBalance = async (req, res) => {
+    try {
+        const balance = await adminService.getLeaveBalanceForEmployee(req.params.employeeId);
+        return sendSuccess(res, { data: { balance } });
+    } catch (err) {
+        sendError(res, err.message, err.status || 500);
+    }
+};
+
+exports.getAllLeaveRequests = async (req, res) => {
+    try {
+        const leaves = await adminService.getAllLeaveRequests();
+        return sendSuccess(res, { data: { leaves } });
+    } catch (err) {
+        sendError(res, err.message, err.status || 500);
+    }
 };

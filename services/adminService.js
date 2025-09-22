@@ -90,16 +90,49 @@ exports.updateLeaveStatus = async (adminId, leaveId, payload) => {
   }
 };
 
-exports.updateLeaveBalance = async (employeeId, payload) => {
-  // Accept deltas to add/reduce; safer than replacing
-  const { casualDelta = 0, privilegeDelta = 0 } = payload;
+// exports.updateLeaveBalance = async (employeeId, payload) => {
+//   // Accept deltas to add/reduce; safer than replacing
+//   const { casualDelta = 0, privilegeDelta = 0 } = payload;
 
-  // Use $inc to atomically adjust
+//   // Use $inc to atomically adjust
+//   const balance = await LeaveBalance.findOneAndUpdate(
+//     { employee: employeeId },
+//     { $inc: { casual: casualDelta, privilege: privilegeDelta } },
+//     { new: true, upsert: true }
+//   );
+
+//   return balance;
+// };
+
+exports.updateLeaveBalance = async (employeeId, payload) => {
+  const { casual = 0, privilege = 0 } = payload;
+
+  // Use $set to overwrite with absolute values
   const balance = await LeaveBalance.findOneAndUpdate(
     { employee: employeeId },
-    { $inc: { casual: casualDelta, privilege: privilegeDelta } },
+    { $set: { casual, privilege } },
     { new: true, upsert: true }
   );
 
   return balance;
+};
+
+exports.getLeaveBalanceForEmployee = async (employeeId) => {
+  const balance = await LeaveBalance.findOne({ employee: employeeId })
+      .populate('employee', 'name');
+  if (!balance) {
+      const error = new Error('Leave balance not found');
+      error.status = 404;
+      throw error;
+  }
+  return balance;
+};
+
+exports.getAllLeaveRequests = async () => {
+  // Populate employee details to show name, email, department
+  const leaves = await LeaveRequest.find()
+      .populate('employee', 'name email department employeeId')
+      .sort({ createdAt: -1 }); // latest first
+
+  return leaves;
 };

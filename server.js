@@ -7,14 +7,16 @@ const authMiddleware = require('./middleware/auth');
 const userRoutes = require('./routes/user');
 const employeeRoutes = require('./routes/employee');
 const adminRoutes    = require('./routes/admin');
-
+const frontendHost = process.env.FRONTEND_HOST;
 
 const app = express();
 app.use(cors({
   origin: 
     [ 
       'http://localhost:3001', 
-      'http://localhost:3000'
+      'http://localhost:3000',
+      'http://localhost:8080',
+      frontendHost
     ], // frontend origin
   credentials: true,  // if you send cookies
 }));
